@@ -4,25 +4,11 @@ import cv2
 import math
 import time
 
-class Face:
-    def __init__(self,x,y,w,h):
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.midx = x + w/2
-        self.midy = y + h/2
-
-class RightEye:
-    def __init__(self,x,y,w,h):
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.midx = x + w/2
-        self.midy = y + h/2
-
-class LeftEye:
+class Eye:
+    """
+    A class to store location and dimension
+    attributes for eyes.
+    """
     def __init__(self,x,y,w,h):
         self.x = x
         self.y = y
@@ -32,6 +18,11 @@ class LeftEye:
         self.midy = y + h/2
 
 def largestIndex(items):
+    """
+    Given a list of objects with a width attribute
+    'w', returns the index of the object with the
+    largest width.
+    """
     largestIndex = 0;
     largest = 0
     for index, item in enumerate(items):
@@ -41,6 +32,11 @@ def largestIndex(items):
     return largestIndex
 
 def run():
+    """
+    Main function to begin camera capture, detect
+    eyes, and calcualte the angle of the largest
+    pair of eyes.
+    """
     # Set up the video feed on second camera available
     cap = cv2.VideoCapture(1)
 
@@ -52,9 +48,8 @@ def run():
     right_eye_cascade = cv2.CascadeClassifier('/home/skelly1/OpenCV/opencv-3.1.0/data/haarcascades/haarcascade_righteye_2splits.xml')
     left_eye_cascade = cv2.CascadeClassifier('/home/skelly1/OpenCV/opencv-3.1.0/data/haarcascades/haarcascade_lefteye_2splits.xml')
 
-    # Run until code is exited
     while 1:
-        # Grab an image from camera and detect eyes
+        # Grab an image from camera and detect eyes in the image
         ret, frame = cap.read()
         rightEyes = right_eye_cascade.detectMultiScale(frame, scaleFactor=1.2, minSize=(10,10))
         leftEyes = left_eye_cascade.detectMultiScale(frame, scaleFactor=1.2, minSize=(10,10))
@@ -63,7 +58,7 @@ def run():
         rightEyeObjects = []
         if len(rightEyes):
             for (x, y, w, h) in rightEyes:
-                rightEyeObjects.append(RightEye(x, y, w, h))
+                rightEyeObjects.append(Eye(x, y, w, h))
             largestRightEye = rightEyeObjects[largestIndex(rightEyeObjects)]
             cv2.rectangle(frame, (largestRightEye.x, largestRightEye.y), (largestRightEye.x+largestRightEye.w, largestRightEye.y+largestRightEye.h), (0, 0, 255))
         
@@ -71,7 +66,7 @@ def run():
         leftEyeObjects = []
         if len(leftEyes):
             for (x, y, w, h) in leftEyes:
-                leftEyeObjects.append(LeftEye(x, y, w, h))
+                leftEyeObjects.append(Eye(x, y, w, h))
             largestLeftEye = leftEyeObjects[largestIndex(leftEyeObjects)]
             cv2.rectangle(frame, (largestLeftEye.x, largestLeftEye.y), (largestLeftEye.x+largestLeftEye.w, largestLeftEye.y+largestLeftEye.h), (0, 0, 255))
 
