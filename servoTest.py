@@ -37,6 +37,10 @@ def main():
 	leftServo = Servo(18, 0)
 	rightServo = Servo(20, 20)
 
+	leftServo.set(50)
+
+	cleanup()
+
 def cleanup():
 	"""
 	Close GPIO pins after code is run.
@@ -45,4 +49,4 @@ def cleanup():
 
 if __name__ == "__main__":
 	main()
-	atexit.register(cleanup)
+	# atexit.register(cleanup)
