@@ -1,26 +1,28 @@
 import RPi.GPIO as GPIO
 import time
 import atexit
+import sys
 
 class Servo:
 	"""
 	A servo class to hold attributes and
 	functions for controlling Mahri's servos.
 	"""
-	def __init__(self, pin, angle):
+	def __init__(self, pin, unwoundAngle, woundAngle):
 		"""
 		Initialize a servo. Also initizlizes
 		a given PWM pin to control the servo.
 		"""
 		self.pin = pin
-		self.angle = angle
-		GPIO.setup(pin, GPIO.OUT)
-		self.pwm = GPIO.PWM(pin, 100)
+		self.unwoundAngle = unwoundAngle
+		self.woundAngle = woundAngle
+		GPIO.setup(self.pin, GPIO.OUT)
+		self.pwm = GPIO.PWM(self.pin, 100)
 		self.pwm.start(5)
 
 	def set(self, angle):
 		"""
-		Set the angle of a servo.
+		Move the servo to the given angle.
 		"""
 		self.pwm.ChangeDutyCycle(float(angle) / 10.0 + 2.5)
 		self.angle = angle
@@ -34,12 +36,50 @@ def main():
 	GPIO.setmode(GPIO.BCM)
 
 	# Initialize left and right servos
-	leftServo = Servo(18, 0)
-	rightServo = Servo(20, 20)
+	lServo = Servo(20, 210, 21)
+	rServo = Servo(18, 20, 225)
 
-	leftServo.set(50)
+	demo(lServo, rServo)
 
 	cleanup()
+
+def demo(lServo, rServo):
+	"""
+	Run servos to have Mahri execute
+	basic movements.
+	"""
+
+	delay = 2
+
+	# Stand up
+	lServo.set(lServo.unwoundAngle)
+	rServo.set(rServo.unwoundAngle)
+	time.sleep(delay)
+
+	# Crouch down
+	lServo.set(lServo.woundAngle)
+	rServo.set(rServo.woundAngle)
+	time.sleep(delay)
+
+	# Stand up
+	lServo.set(lServo.unwoundAngle)
+	rServo.set(rServo.unwoundAngle)
+	time.sleep(delay)
+
+	# Lean left
+	lServo.set(lServo.woundAngle)
+	rServo.set(rServo.unwoundAngle)
+	time.sleep(delay)
+
+	# Lean right
+	lServo.set(lServo.unwoundAngle)
+	rServo.set(rServo.woundAngle)
+	time.sleep(delay)
+
+	# Stand up
+	lServo.set(lServo.unwoundAngle)
+	rServo.set(rServo.unwoundAngle)
+	time.sleep(delay)
 
 def cleanup():
 	"""
