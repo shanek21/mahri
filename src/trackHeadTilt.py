@@ -31,22 +31,22 @@ def largestIndex(items):
             largestIndex = index
     return largestIndex
 
-def run():
+def run(camera_mode, l_eye_file, r_eye_file):
     """
     Main function to begin camera capture, detect
     eyes, and calcualte the angle of the largest
     pair of eyes.
     """
     # Set up the video feed on second camera available
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(camera_mode)
 
     # Define video resolution
     cap.set(3, 480)
     cap.set(4, 360)
 
     # Point to haarcascades for eye detection
-    right_eye_cascade = cv2.CascadeClassifier('/home/skelly1/OpenCV/opencv-3.1.0/data/haarcascades/haarcascade_righteye_2splits.xml')
-    left_eye_cascade = cv2.CascadeClassifier('/home/skelly1/OpenCV/opencv-3.1.0/data/haarcascades/haarcascade_lefteye_2splits.xml')
+    right_eye_cascade = cv2.CascadeClassifier(r_eye_file)
+    left_eye_cascade = cv2.CascadeClassifier(l_eye_file)
 
     while 1:
         # Grab an image from camera and detect eyes in the image
@@ -94,4 +94,4 @@ def run():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    run()
+    pass#run(1, '/home/kghite/opencv/data/haarcascades/haarcascade_righteye_2splits.xml', '/home/kghite/opencv/data/haarcascades/haarcascade_lefteye_2splits.xml')
