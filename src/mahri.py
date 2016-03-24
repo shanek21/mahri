@@ -16,5 +16,7 @@ camera = int(config.get('camera_settings', 'camera'))
 rEyeFile = config.get('opencv_files', 'right_eye_path')
 lEyeFile = config.get('opencv_files', 'left_eye_path')
 
+print lEyeFile
+
 if __name__ == "__main__":
 	trackHeadTilt.run(camera, rEyeFile, lEyeFile)

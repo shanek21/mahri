@@ -94,4 +94,4 @@ def run(camera_mode, l_eye_file, r_eye_file):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    pass#run(1, '/home/kghite/opencv/data/haarcascades/haarcascade_righteye_2splits.xml', '/home/kghite/opencv/data/haarcascades/haarcascade_lefteye_2splits.xml')
+    run(0, '/home/kghite/opencv/data/haarcascades/haarcascade_righteye_2splits.xml', '/home/kghite/opencv/data/haarcascades/haarcascade_lefteye_2splits.xml')
