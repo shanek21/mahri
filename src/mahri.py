@@ -4,7 +4,11 @@
 Main file to run Mahri modules
 """
 
-CONFIG_FILE = 'config/kghite_config.ini'
+# Choose config file
+# ---------------------------------------
+# CONFIG_FILE = 'config/kghite_config.ini'
+CONFIG_FILE = 'config/shanek21_config.ini'
+# ---------------------------------------
 
 from ConfigParser import SafeConfigParser
 import trackHeadTilt

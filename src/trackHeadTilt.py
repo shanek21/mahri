@@ -3,6 +3,7 @@
 import cv2
 import math
 import time
+import servoControl
 
 class Eye:
     """
@@ -37,6 +38,9 @@ def run(camera_mode, l_eye_file, r_eye_file):
     eyes, and calcualte the angle of the largest
     pair of eyes.
     """
+    # Initialize Mahri's servos
+    servoControl.Initialize()
+
     # Set up the video feed on second camera available
     cap = cv2.VideoCapture(camera_mode)
 
@@ -76,8 +80,9 @@ def run(camera_mode, l_eye_file, r_eye_file):
             yDistance = largestRightEye.midy - largestLeftEye.midy
 
             try:
-                angle = math.asin(float(yDistance)/xDistance)
-                print math.degrees(angle)
+                angle = math.degrees(math.asin(float(yDistance)/xDistance))
+                servoControl.setMahriAngle(angle)
+                print angle
                 print "\n"
             except:
                 pass
@@ -87,6 +92,10 @@ def run(camera_mode, l_eye_file, r_eye_file):
 
         # Wait for an escape key press
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            # Unmount GPIO pins
+            servoControl.cleanup()
+
+            # Break the while loop to end video capture
             break
 
     # When escape key is pressed, end the capture
